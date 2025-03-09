@@ -2,6 +2,7 @@ import openai
 from openai import Client
 import os
 from dotenv import load_dotenv
+from crawl_blog import crawl_blog
 
 # .env 파일에서 환경 변수 로드
 load_dotenv()
@@ -13,14 +14,8 @@ print(api_key)
 client = openai.Client(api_key = api_key)
 
 # 블로그 스타일 예제
-sample_blog_post = """
-간식들 먹으면서 푹 쉬어줬음.
-달고나 팝콘은 너무 달아서 비추 ㅠ
-하츄핑 팝콘은 바나나킥 맛이었음.
-
-그래도 주말에 푹 쉬어준 덕에 괜찮아져서
-구미 내려가봅니다 💨
-"""
+url = input("블로그의 url을 입력하세요")
+sample_blog_post = crawl_blog(url)
 
 # 새로운 주제
 new_topic = "대만 야시장 방문기"
