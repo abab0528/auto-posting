@@ -14,7 +14,7 @@ print(api_key)
 client = openai.Client(api_key = api_key)
 
 # 블로그 스타일 예제
-url = input("블로그의 url을 입력하세요")
+url = input("블로그의 url을 입력하세요: ")
 sample_blog_post = crawl_blog(url)
 
 # 새로운 주제
@@ -41,9 +41,10 @@ def generate_blog_post_with_style(prompt, style_description):
     return response.choices[0].message.content.strip()
 
 # 예시 블로그 글 스타일 분석
-style_analysis = analyze_blog_style(sample_blog_post)
-print("Style Analysis:")
-print(style_analysis)
+if sample_blog_post:
+    style_analysis = analyze_blog_style(sample_blog_post)
+    print("Style Analysis:")
+    print(style_analysis)
 
 # 스타일에 맞춰 새로운 블로그 글 생성
 generated_blog = generate_blog_post_with_style(new_topic, style_analysis)
