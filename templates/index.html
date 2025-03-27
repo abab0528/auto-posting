@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, intial-scale=1.0">
+    <title>블로그 포스팅 생성</title>
+</head>
+<body>
+    <h1>블로그 포스팅 생성하기</h1>
+    <form method="POST" enctype="multipart/form-data" action="/submit">
+        <!--새로운 주제-->
+        <label for="new_topic">새로운 주제를 입력하세요 : </label><br>
+        <input type="text" id="new_topic" name="new_topic" placeholder="대만 여행기" required><br><br>
+
+        <!--독자층-->
+        <label for="audience">독자층을 입력하세요 : </label><br>
+        <input type="text" id="audience" name="audience" placeholder="20대 대학생" required><br><br>
+
+        <!--글길이-->
+        <label for="length">글 길이를 선택하세요 : </label><br>
+        <input type="radio" id="short" name="length" value="short" required> <label for="short">짧은 (500자 이하)</label><br>
+        <input type="radio" id="medium" name="length" value="medium"> <label for="medium">중간 (500자~1000자)</label><br>
+        <input type="radio" id="long" name="length" value="long"> <label for="long">긴 (1000자 이상)</label><br><br>
+
+        <!-- 키워드 -->
+        <label for="keywords">포함할 키워드를 입력하세요 : </label><br>
+        <input type="text" id="keywords" name="keywords" placeholder="예스진지 투어, 지우펀, 예류" required><br><br>
+        
+        <!-- 포스팅 형식 (라디오 버튼 사용) -->
+        <label for="format_choice">포스팅 형식을 선택하세요 : </label><br>
+        <input type="radio" id="list" name="format_choice" value="list" required> <label for="list">리스트형</label><br>
+        <input type="radio" id="blog" name="format_choice" value="blog"> <label for="blog">블로그형</label><br>
+        <input type="radio" id="essay" name="format_choice" value="essay"> <label for="essay">에세이형</label><br><br>
+
+        <!-- 이미지 파일 업로드 -->
+        <label for="image">이미지를 선택하세요:</label><br>
+        <input type="file" id="image" name="image" accept="image/*"><br><br>
+  
+        <button type="submit">포스팅 생성</button>
+    </form>
+</body>
+</html>
