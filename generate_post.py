@@ -13,9 +13,19 @@ api_key = os.getenv("OPENAI_API_KEY2")
 
 client = openai.Client(api_key = api_key)
 
-# 블로그 스타일 예제
-url = input("블로그의 url을 입력하세요: ")
-sample_blog_post = crawl_blog(url)
+def generate_post_with_gpt(blog_url, new_topic, audience, length, keywords, format_choice, image_url=None):
+    sample_blog_post = crawl_blog(blog_url)
+
+    # 예시 블로그 글 스타일 분석
+    if sample_blog_post:
+        style_analysis = analyze_blog_style(sample_blog_post)
+        print("Style Analysis:")
+        print(style_analysis)
+    
+    generated_blog = generate_blog_post_with_style(style_analysis, new_topic, audience, length, keywords, format_choice)
+    print("\nGenerated Blog Post:")
+    print(generated_blog)
+    return generated_blog
 
 # 블로그 글 스타일 분석을 위한 함수
 def analyze_blog_style(blog_post):
@@ -36,19 +46,3 @@ def generate_blog_post_with_style(style_analysis, new_topic, audience, length, k
         {"role": "user", "content": combined_prompt}
     ])
     return response.choices[0].message.content.strip()
-
-# 예시 블로그 글 스타일 분석
-if sample_blog_post:
-    style_analysis = analyze_blog_style(sample_blog_post)
-    print("Style Analysis:")
-    print(style_analysis)
-
-# 스타일에 맞춰 새로운 블로그 글 생성
-new_topic = input("새로운 주제를 입력하세요: ")
-audience = input("독자층을 입력하세요: ")
-length = input("글 길이를 입력하세요(short/medium/long): ")
-keywords = input("포함할 키워드를 입력하세요: ") 
-format_choice = input("포스팅 형식을 입력하세요(list/blog/essay): ")
-generated_blog = generate_blog_post_with_style(style_analysis, new_topic, audience, length, keywords, format_choice)
-print("\nGenerated Blog Post:")
-print(generated_blog)
