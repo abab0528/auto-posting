@@ -1,13 +1,60 @@
-from flask import Flask, render_template, request
+import requests
+from flask import Flask, render_template, request, redirect, url_for, session
 import os
 from generate_post import generate_post_with_gpt
+from dotenv import load_dotenv
+from requests.auth import HTTPBasicAuth
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'
+
+load_dotenv()
+
+client_id = os.getenv("NAVER_CLIENT_ID")
+client_secret = os.getenv("NAVER_CLIENT_SECRET")
+redirect_uri = os.getenv("NAVER_REDIRECT_URI")
+
+# 네이버 OAuth 2.0 인증 URL
+oauth_url = os.getenv("OAUTH_URL")
+token_url = os.getenv("TOKEN_URL")
 
 UPLOAD_FOLDER = 'uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
+def home():
+    return '네이버 블로그 API 연동을 위한 OAuth 인증을 시작하세요'
+
+@app.route('/login')
+def login():
+    auth_url = f"{oauth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}"
+    print(auth_url)
+    return redirect(auth_url)
+
+@app.route('/naver/callback')
+def callback():
+    code = request.args.get('code')
+    if not code:
+        return 'OAuth 인증 실패'
+    
+    parmas = {
+        'grant_type': 'authorization_code',
+        'client_id': client_id,
+        'client_secret': client_secret,
+        'redirect_uri': redirect_uri,
+        'code': code
+    }
+
+    response = requests.get(token_url, params=parmas)
+    data = response.json()
+
+    if 'access_token' in data:
+        session['access_token'] = data['access_token']
+        return '인증 성공'
+    else:
+        return 'Access Token을 얻지 못했습니다.'
+
+@app.route('/generate')
 def index():
     return render_template('index.html')
 
